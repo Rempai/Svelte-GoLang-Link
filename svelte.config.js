@@ -1,9 +1,10 @@
 import { defineConfig } from 'vite';
 import { svelte } from '@sveltejs/vite-plugin-svelte';
+import adapter from '@sveltejs/adapter-auto';
 
 export default defineConfig({
 	kit: {
-		// No need to specify the directory for routes if using the default location
+		adapter: adapter() // Automatically selects appropriate adapter
 	},
 	plugins: [svelte()]
 });

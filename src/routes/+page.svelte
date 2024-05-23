@@ -12,7 +12,6 @@
 
 		try {
 			const response = await fetch('http://localhost:8080/upload', {
-				// Change the URL to your backend endpoint
 				method: 'POST',
 				body: formData
 			});
@@ -21,7 +20,15 @@
 				throw new Error('File upload failed');
 			}
 
-			// Handle successful response
+			const filename = file.name.replace(/\.dem$/, '') + '.csv'; // Use the uploaded file's name
+			const blob = await response.blob();
+			const url = window.URL.createObjectURL(blob);
+			const link = document.createElement('a');
+			link.href = url;
+			link.setAttribute('download', filename);
+			document.body.appendChild(link);
+			link.click();
+			document.body.removeChild(link);
 		} catch (error) {
 			console.error('Error:', error);
 			alert('Error uploading file');
@@ -29,11 +36,12 @@
 	}
 
 	function handleFileChange(event) {
-		const target = event.target;
-		file = target.files ? target.files[0] : null;
+		const input = event.target;
+		if (!input.files) return;
+		file = input.files[0];
 	}
-</script>
 
+</script>
 
 <div class="upload-container">
 	<h1>Upload .dem File</h1>
